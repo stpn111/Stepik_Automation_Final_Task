@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver import ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
 
+
 class UnsupportedBrowserException(Exception):
     pass
 
@@ -28,7 +29,7 @@ def config(request):
 
 
 @pytest.fixture(scope='function')
-def driver(config):
+def browser(config):
     browser = config['browser']
     version = config['version']
     url = config['url']
