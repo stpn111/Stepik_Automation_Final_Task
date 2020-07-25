@@ -1,9 +1,11 @@
 from pages.product_page import ProductPage
 from pages.basket_page import BasketPage
+from pages.login_page import LoginPage
 import pytest
+import time
 
-link1 = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
-link2 = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
+link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
+link2 = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
 
 
 @pytest.mark.skip
@@ -34,7 +36,7 @@ def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
     page.open()
     page.add_to_basket()
     page.should_not_be_success_message()
-    # не стал заводить отдельный тест
+#    не стал заводить отдельный тест
 #    page.should_dissapear_of_success_message()
 
 
@@ -60,3 +62,33 @@ def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     basket_page = BasketPage(browser, browser.current_url)
     basket_page.should_not_be_items_list_message()
     basket_page.should_be_empty_basket_text()
+
+
+@pytest.mark.login
+class TestUserAddToBasketFromProductPage:
+
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        self.browser = browser
+        email = str(time.time()) + "@fakemail.org"
+        link = "http://selenium1py.pythonanywhere.com/ru/accounts/login/"
+        page = LoginPage(self.browser, link)
+        page.open()
+        # создаем по апи
+        page.register_new_user(email, "11qazerty")
+        page.should_be_authorized_user()
+
+    def test_user_cant_see_product_in_basket_opened_from_product_page(self, browser):
+        page = ProductPage(browser, link2)
+        page.open()
+        page.go_to_basket()
+        basket_page = BasketPage(browser, browser.current_url)
+        basket_page.should_not_be_items_list_message()
+        basket_page.should_be_empty_basket_text()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        page = ProductPage(browser, link2)
+        page.open()
+        page.add_to_basket()
+        page.check_name()
+        page.check_price()

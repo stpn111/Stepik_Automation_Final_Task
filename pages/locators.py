@@ -5,6 +5,7 @@ class BasePageLocators:
     LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
     LOGIN_FORM = (By.ID, "login_form")
     BASKET_BUTTON = (By.XPATH, '//span/a[contains(@href, "/basket/")]')
+    USER_ICON = (By.CSS_SELECTOR, ".icon-user")
 
 
 class MainPageLocators:
@@ -20,6 +21,10 @@ class LoginPageLocators:
 
     REGISTER_FORM = (By.ID, "register_form")
     LOGIN_FORM = (By.ID, "login_form")
+    EMAIL = (By.NAME, "registration-email")
+    PASSWORD = (By.NAME, "registration-password1")
+    REPEAT = (By.NAME, "registration-password2")
+    REGISTER_BUTTON = (By.NAME, "registration_submit")
 
 
 class ProductPageLocators:
