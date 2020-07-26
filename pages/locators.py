@@ -18,7 +18,6 @@ class BasketPageLocators:
 
 
 class LoginPageLocators:
-
     REGISTER_FORM = (By.ID, "register_form")
     LOGIN_FORM = (By.ID, "login_form")
     EMAIL = (By.NAME, "registration-email")

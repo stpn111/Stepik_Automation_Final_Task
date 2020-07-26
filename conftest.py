@@ -53,5 +53,6 @@ def browser(config):
     driver.get(url)
     driver.maximize_window()
     yield driver
+    # даже с quit периодически почему-то не закрывается браузер, решается killall chromedriver
     driver.close()
     driver.quit()

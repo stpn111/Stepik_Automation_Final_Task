@@ -1,7 +1,6 @@
 from .base_page import BasePage
 from .locators import ProductPageLocators
-from selenium.common.exceptions import NoAlertPresentException  # в начале файла
-from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoAlertPresentException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import math
@@ -11,6 +10,7 @@ class ProductPage(BasePage):
     def add_to_basket(self):
         self.browser.find_element(*ProductPageLocators.BASKET).click()
 
+    # функция реакции на алерт при добавлении в корзину
     def solve_quiz_and_get_code(self):
         alert = self.browser.switch_to.alert
         x = alert.text.split(" ")[2]
@@ -32,7 +32,7 @@ class ProductPage(BasePage):
         basket_price_value = WebDriverWait(self.browser, 5).until(
             EC.element_to_be_clickable(ProductPageLocators.PRICE_FIELD)
         ).text
-        assert cur_price_value == basket_price_value
+        assert cur_price_value == basket_price_value, "Prices are not equal"
 
     def check_name(self):
         cur_name_value = WebDriverWait(self.browser, 5).until(
@@ -41,7 +41,7 @@ class ProductPage(BasePage):
         basket_name_value = WebDriverWait(self.browser, 5).until(
             EC.element_to_be_clickable(ProductPageLocators.BOOK_NAME_FIELD)
         ).text
-        assert cur_name_value == basket_name_value
+        assert cur_name_value == basket_name_value, "Names are not equal"
 
     def should_not_be_success_message(self):
         assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
